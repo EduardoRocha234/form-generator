@@ -2,7 +2,7 @@ import {Icon} from '@iconify/react'
 
 function NavBar() {
 	return (
-		<div className="bg-white fixed top-0 flex items-center justify-between py-4 px-6 shadow-sm w-full">
+		<div className="bg-white fixed top-0 flex items-center justify-between py-4 px-6 shadow-sm w-full z-50">
 			<div>
 				<h1 className="text-lg font-bold">Form constructor</h1>
 				<span className="text-slate-600">
