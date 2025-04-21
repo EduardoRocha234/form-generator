@@ -1,5 +1,6 @@
 import React, {useCallback, useState} from 'react'
 import {BaseElementProps, DragItem, FormElement} from '../../interfaces'
+import { v4 as uuidv4 } from 'uuid';
 
 export const calculateDropElements = (
 	item: DragItem,
@@ -11,7 +12,6 @@ export const calculateDropElements = (
 
 	const newElements = elements.filter((el) => el.id !== previewId)
 
-	// Agrupa por linha
 	const rows: Record<number, FormElement[]> = {}
 	newElements.forEach((el) => {
 		if (!rows[el.row]) rows[el.row] = []
@@ -24,12 +24,10 @@ export const calculateDropElements = (
 
 	const resizeElements: {id: string; width: number}[] = []
 
-	// Redimensiona todos os elementos da linha para acomodar o novo
 	rowElements.forEach((e) => {
 		resizeElements.push({id: e.id, width})
 	})
 
-	// Create a copy of the elements with resized widths
 	const resultElements = [...newElements]
 
 	resizeElements.forEach((resize) => {
@@ -42,9 +40,8 @@ export const calculateDropElements = (
 		}
 	})
 
-	// Add the new element
 	resultElements.push({
-		id: isPreview ? 'preview' : `${item.type}-${Date.now()}`,
+		id: isPreview ? 'preview' : `${item.type}-${uuidv4()}`,
 		type: item.type,
 		width,
 		row: targetRow,
@@ -62,25 +59,20 @@ export const calculateResizeElements = (
 	id: string,
 	newWidth: number
 ) => {
-	// Encontra o elemento que foi alterado
 	const targetElement = prevElements.find((el) => el.id === id)
 	if (!targetElement) return prevElements
 
 	const targetRow = targetElement.row
 
-	// Pega todos os elementos da mesma linha
 	const elementsInRow = prevElements.filter((el) => el.row === targetRow)
 
 	const originalWidth = targetElement.width
 	const widthDiff = newWidth - originalWidth
 
-	// Calcula quanto precisa ser redistribuído entre os outros
 	const otherElements = elementsInRow.filter((el) => el.id !== id)
 	const numOthers = otherElements.length
 
-	// Evita divisão por zero
 	if (numOthers === 0) {
-		// Só tem 1 elemento na linha, atualiza ele direto
 		return prevElements.map((el) =>
 			el.id === id ? {...el, width: Math.min(100, Math.max(0, newWidth))} : el
 		)
@@ -88,7 +80,6 @@ export const calculateResizeElements = (
 
 	const redistributedWidth = widthDiff / numOthers
 
-	// Atualiza os elementos
 	return prevElements.map((el) => {
 		if (el.row !== targetRow) return el
 

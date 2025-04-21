@@ -4,7 +4,6 @@ import {UndoRedoProvider} from './components/DropForm/UndoRedoContext'
 import NavBar from './components/NavBar'
 import SideBar from './components/SideBar'
 import DropForm from './components/DropForm/Index'
-import './App.css'
 
 function App() {
 	return (
@@ -15,7 +14,6 @@ function App() {
 					<div className="bg-slate-100 w-full grid min-h-screen md:grid-cols-[280px_1fr] overflow-y-auto">
 						<SideBar />
 						<div className="h-full max-w-[calc(100vw-280px)] overflow-y-auto bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] flex items-center justify-center p-[7rem]">
-							{/* <div className="h-full rounded-lg shadow-sm w-full bg-white"></div> */}
 							<DropForm />
 						</div>
 					</div>
