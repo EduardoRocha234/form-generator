@@ -1,20 +1,38 @@
-interface MultilineElementProps {
-	id: string
-}
+import {BaseElementProps} from '../../../interfaces'
 
-function MultilineElement({id}: MultilineElementProps) {
+interface MultilineElementProps extends BaseElementProps {}
+
+function MultilineElement({
+	id,
+	properties,
+	handlePropertiesChange,
+}: MultilineElementProps) {
+	const defaultProperties = properties || {
+		label: 'Multiline Element',
+		placeholder: '',
+		required: false,
+		description: '',
+		defaultValue: '',
+	}
+
 	return (
 		<div>
 			<label
 				htmlFor={id}
-				className="block text-sm mb-1"
+				className="block text-md mb-2 font-semibold text-slate-600"
 			>
-				Multiline
+				<input
+					value={defaultProperties.label}
+					onChange={(e) =>
+						handlePropertiesChange(id, {...properties, label: e.target.value})
+					}
+					className="focus:outline-0 hover:border-b-2 border-slate-400 transition-all duration-100 w-[80%]"
+				/>
 			</label>
 			<textarea
 				id={id}
-				placeholder="Multiline"
-				className="p-2 border rounded w-full"
+				placeholder={defaultProperties?.placeholder}
+				className="py-2 px-4 rounded-md border bg-slate-50 border-slate-300 w-full focus:outline-0"
 			/>
 		</div>
 	)

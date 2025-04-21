@@ -8,7 +8,7 @@ import {
 	FormElementProperties,
 	HoverPosition,
 	Position,
-} from '../../interfaces/drop-form.interface'
+} from '../../interfaces'
 import {calculateDropElements, calculateResizeElements} from './helpers'
 import {Icon} from '@iconify/react/dist/iconify.js'
 
@@ -102,9 +102,11 @@ function DropForm() {
 					true
 				)
 
-				// const dropRect = dropAreaRef.current.getBoundingClientRect()
-				const relX = offset.x
-				const relY = offset.y
+				const dropRect = dropAreaRef.current.getBoundingClientRect()
+				const relX = offset.x - dropRect.left
+				const relY = offset.y - dropRect.top
+				// const relX = offset.x
+				// const relY = offset.y
 
 				setPreviewState({
 					elements: previewElements,
@@ -264,7 +266,7 @@ function DropForm() {
 						icon={'ri:drag-drop-line'}
 						className="size-20 "
 					/>
-					Drag an drop elements here
+					Drag an Drop components here
 				</div>
 			)}
 		</div>

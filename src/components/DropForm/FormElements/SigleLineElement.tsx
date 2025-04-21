@@ -1,13 +1,6 @@
-import {FormElementProperties} from '../../../interfaces/drop-form.interface'
+import {BaseElementProps} from '../../../interfaces'
 
-interface SingleLineElementProps {
-	id: string
-	properties?: FormElementProperties
-	handlePropertiesChange: (
-		id: string,
-		properties: FormElementProperties
-	) => void
-}
+interface SingleLineElementProps extends BaseElementProps {}
 
 function SingleLineElement({
 	id,
@@ -33,7 +26,7 @@ function SingleLineElement({
 					onChange={(e) =>
 						handlePropertiesChange(id, {...properties, label: e.target.value})
 					}
-					className='focus:outline-0 hover:border-b-2 border-slate-400 transition-all duration-100 w-[80%]'
+					className="focus:outline-0 hover:border-b-2 border-slate-400 transition-all duration-100 w-[80%]"
 				/>
 			</label>
 			<input

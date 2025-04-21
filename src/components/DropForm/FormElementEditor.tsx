@@ -1,15 +1,8 @@
-import {useRef, useState} from 'react'
+import React, {useRef, useState} from 'react'
 import {useDrag} from 'react-dnd'
-import type {
-	FormElement,
-	FormElementProperties,
-} from '../../interfaces/drop-form.interface'
-import {
-	SingleLineElement,
-	MultilineElement,
-	NumberElement,
-} from './FormElements'
 import {Icon} from '@iconify/react/dist/iconify.js'
+import type {FormElement, FormElementProperties} from '../../interfaces'
+import { componentMap } from './helpers'
 
 interface FormElementEditorProps {
 	element: FormElement
@@ -84,6 +77,8 @@ function FormElementEditor({
 		document.addEventListener('mouseup', handleMouseUp)
 	}
 
+	const Component = componentMap[type]
+
 	return (
 		<div
 			ref={containerRef}
@@ -94,15 +89,11 @@ function FormElementEditor({
 		>
 			{dragRef(
 				<div>
-					{type === 'singleLine' && (
-						<SingleLineElement
-							id={id}
-							properties={element.properties}
-							handlePropertiesChange={handlePropertiesChange}
-						/>
-					)}
-					{type === 'multiline' && <MultilineElement id={id} />}
-					{type === 'number' && <NumberElement id={id} />}
+					<Component
+						id={id}
+						properties={element.properties}
+						handlePropertiesChange={handlePropertiesChange}
+					/>
 				</div>
 			)}
 
