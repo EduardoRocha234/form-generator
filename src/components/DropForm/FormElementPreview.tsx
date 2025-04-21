@@ -3,19 +3,12 @@ import type {ElementType, Position} from '../../interfaces/drop-form.interface'
 interface FormElementPreviewProps {
 	type: ElementType
 	position: Position
-	isVisible: boolean
 }
 
-function FormElementPreview({
-	isVisible,
-	position,
-	type,
-}: FormElementPreviewProps) {
-	if (!isVisible || !type) return null
-
+function FormElementPreview({position, type}: FormElementPreviewProps) {
 	return (
 		<div
-			className="absolute pointer-events-none opacity-50 bg-blue-50 p-2 rounded border-2 border-blue-300 shadow-lg w-1/2"
+			className="absolute pointer-events-none opacity-50 bg-blue-50 p-2 rounded border-2 border-blue-300 shadow-lg w-1/2 -rotate-3"
 			style={{
 				left: position.x,
 				top: position.y,

@@ -1,4 +1,4 @@
-import {useState, useRef, JSX, ElementType} from 'react'
+import {useState, useRef, JSX, ElementType, useEffect} from 'react'
 import {useDrop} from 'react-dnd'
 import FormRow from './FormRow'
 import FormElementPreview from './FormElementPreview'
@@ -11,12 +11,13 @@ import {
 } from '../../interfaces'
 import {calculateDropElements, calculateResizeElements} from './helpers'
 import {Icon} from '@iconify/react/dist/iconify.js'
+import {useUndoRedoContext} from './UndoRedoContext'
 
 function DropForm() {
 	const HOVER_DEBONCE_TIME = 150
 	const dropAreaRef = useRef<HTMLDivElement | null>(null)
 	const rowsRef = useRef<(HTMLDivElement | null)[]>([])
-	const [elements, setElements] = useState<FormElement[]>([])
+	const {elements, setElements, undo, redo} = useUndoRedoContext()
 	const [previewState, setPreviewState] = useState<{
 		elements: FormElement[] | null
 		position: Position
@@ -128,7 +129,7 @@ function DropForm() {
 				)
 
 				if (!item.id) {
-					setElements((prev) => calculateDropElements(item, prev, targetRow))
+					setElements(calculateDropElements(item, elements, targetRow))
 				}
 
 				setPreviewState({
@@ -153,9 +154,7 @@ function DropForm() {
 	}
 
 	const handleWidthChange = (id: string, newWidth: number) => {
-		setElements((prevElements) =>
-			calculateResizeElements(prevElements, id, newWidth)
-		)
+		setElements(calculateResizeElements(elements, id, newWidth))
 	}
 
 	const handlePropertiesChange = (
@@ -165,14 +164,13 @@ function DropForm() {
 		const index = elements.findIndex((el) => el.id === id)
 
 		if (index !== -1) {
-			setElements((prev) => {
-				const updatedElements = [...prev]
-				updatedElements[index] = {
-					...updatedElements[index],
-					properties: {...newProperties},
-				}
-				return updatedElements
-			})
+			const updatedElements = [...elements]
+			updatedElements[index] = {
+				...updatedElements[index],
+				properties: {...newProperties},
+			}
+
+			setElements(updatedElements)
 		}
 	}
 
@@ -180,27 +178,27 @@ function DropForm() {
 		const index = elements.findIndex((el) => el.id === id)
 
 		if (index !== -1) {
-			setElements((prev) => {
-				const updatedElements = [...prev]
-				const elementToRemove = updatedElements[index]
+			const updatedElements = [...elements]
+			const elementToRemove = updatedElements[index]
 
-				const newElementsWithoutRemovedElement = updatedElements.filter(
-					(el) => el.id !== id
-				)
+			const newElementsWithoutRemovedElement = updatedElements.filter(
+				(el) => el.id !== id
+			)
 
-				const elementsInSameRow = newElementsWithoutRemovedElement.filter(
-					(el) => el.row === elementToRemove.row && el.id !== id
-				)
+			const elementsInSameRow = newElementsWithoutRemovedElement.filter(
+				(el) => el.row === elementToRemove.row && el.id !== id
+			)
 
-				return newElementsWithoutRemovedElement.map((el) => {
-					if (el.row !== elementToRemove.row) return el
+			const newElementsList = newElementsWithoutRemovedElement.map((el) => {
+				if (el.row !== elementToRemove.row) return el
 
-					return {
-						...el,
-						width: 100 / elementsInSameRow.length,
-					}
-				})
+				return {
+					...el,
+					width: 100 / elementsInSameRow.length,
+				}
 			})
+
+			setElements(newElementsList)
 		}
 	}
 
@@ -234,6 +232,22 @@ function DropForm() {
 		})
 	}
 
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.ctrlKey && e.key === 'z') {
+				undo()
+			} else if (
+				e.ctrlKey &&
+				(e.key === 'y' || (e.shiftKey && e.key === 'Z'))
+			) {
+				redo()
+			}
+		}
+
+		window.addEventListener('keydown', handleKeyDown)
+		return () => window.removeEventListener('keydown', handleKeyDown)
+	}, [undo, redo])
+
 	return (
 		<div
 			ref={combineRefs}
@@ -253,11 +267,12 @@ function DropForm() {
 			{
 				<div className="p-4">
 					{renderRows()}
-					<FormElementPreview
-						type={previewState.type as ElementType | null}
-						position={previewState.position}
-						isVisible={isOver}
-					/>
+					{previewState.type && isOver && (
+						<FormElementPreview
+							type={previewState.type}
+							position={previewState.position}
+						/>
+					)}
 				</div>
 			}
 			{elements.length === 0 && !isOver && (
