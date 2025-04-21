@@ -19,7 +19,6 @@ function SingleLineElement({
 		placeholder: '',
 		required: false,
 		description: '',
-		options: [],
 		defaultValue: '',
 	}
 
@@ -34,7 +33,7 @@ function SingleLineElement({
 					onChange={(e) =>
 						handlePropertiesChange(id, {...properties, label: e.target.value})
 					}
-					className='focus:outline-0 hover:border-b-2 border-slate-400 transition-all duration-100'
+					className='focus:outline-0 hover:border-b-2 border-slate-400 transition-all duration-100 w-[80%]'
 				/>
 			</label>
 			<input

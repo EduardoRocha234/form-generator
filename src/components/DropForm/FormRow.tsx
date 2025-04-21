@@ -13,12 +13,14 @@ interface FormRowProps {
 		id: string,
 		properties: FormElementProperties
 	) => void
+	handleRemoveComponent: (id: string) => void
 }
 
 function FormRow({
 	elements,
 	onWidthChange,
 	handlePropertiesChange,
+	handleRemoveComponent,
 	rowRef,
 }: FormRowProps) {
 	return (
@@ -35,6 +37,7 @@ function FormRow({
 						element={element}
 						onWidthChange={onWidthChange}
 						handlePropertiesChange={handlePropertiesChange}
+						handleRemoveComponent={handleRemoveComponent}
 					/>
 				))}
 		</div>

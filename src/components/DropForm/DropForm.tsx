@@ -10,6 +10,7 @@ import {
 	Position,
 } from '../../interfaces/drop-form.interface'
 import {calculateDropElements, calculateResizeElements} from './helpers'
+import {Icon} from '@iconify/react/dist/iconify.js'
 
 function DropForm() {
 	const HOVER_DEBONCE_TIME = 150
@@ -51,7 +52,7 @@ function DropForm() {
 		let shouldCreateNewRow = false
 		if (formRows.length > 0) {
 			const lastRowRect = formRows[formRows.length - 1].getBoundingClientRect()
-			if (y > lastRowRect.bottom - 20) {
+			if (y > lastRowRect.bottom) {
 				calculatedRow = formRows.length
 				shouldCreateNewRow = true
 			}
@@ -101,9 +102,9 @@ function DropForm() {
 					true
 				)
 
-				const dropRect = dropAreaRef.current.getBoundingClientRect()
-				const relX = offset.x - dropRect.left
-				const relY = offset.y - dropRect.top
+				// const dropRect = dropAreaRef.current.getBoundingClientRect()
+				const relX = offset.x
+				const relY = offset.y
 
 				setPreviewState({
 					elements: previewElements,
@@ -173,6 +174,34 @@ function DropForm() {
 		}
 	}
 
+	const handleRemoveComponent = (id: string) => {
+		const index = elements.findIndex((el) => el.id === id)
+
+		if (index !== -1) {
+			setElements((prev) => {
+				const updatedElements = [...prev]
+				const elementToRemove = updatedElements[index]
+
+				const newElementsWithoutRemovedElement = updatedElements.filter(
+					(el) => el.id !== id
+				)
+
+				const elementsInSameRow = newElementsWithoutRemovedElement.filter(
+					(el) => el.row === elementToRemove.row && el.id !== id
+				)
+
+				return newElementsWithoutRemovedElement.map((el) => {
+					if (el.row !== elementToRemove.row) return el
+
+					return {
+						...el,
+						width: 100 / elementsInSameRow.length,
+					}
+				})
+			})
+		}
+	}
+
 	const elementsToRender =
 		isOver && previewState.elements ? previewState.elements : elements
 
@@ -192,6 +221,7 @@ function DropForm() {
 					rowNumber={rowNum}
 					onWidthChange={handleWidthChange}
 					handlePropertiesChange={handlePropertiesChange}
+					handleRemoveComponent={handleRemoveComponent}
 					rowRef={(el: HTMLDivElement | null) => {
 						if (el) {
 							rowsRef.current[rowNum] = el
@@ -218,20 +248,25 @@ function DropForm() {
 					Add description
 				</button>
 			</div>
-			<div className="p-4">
-				{renderRows()}
-				<FormElementPreview
-					type={previewState.type as ElementType | null}
-					position={previewState.position}
-					isVisible={isOver}
-				/>
-
-				{elements.length === 0 && !isOver && (
-					<div className="text-center text-gray-500 p-8">
-						Arraste elementos do formulário para aqui
-					</div>
-				)}
-			</div>
+			{
+				<div className="p-4">
+					{renderRows()}
+					<FormElementPreview
+						type={previewState.type as ElementType | null}
+						position={previewState.position}
+						isVisible={isOver}
+					/>
+				</div>
+			}
+			{elements.length === 0 && !isOver && (
+				<div className="h-full w-full flex flex-col -mt-20 items-center font-semibold text-lg justify-center text-slate-400">
+					<Icon
+						icon={'ri:drag-drop-line'}
+						className="size-20 "
+					/>
+					Drag an drop elements here
+				</div>
+			)}
 		</div>
 	)
 }
