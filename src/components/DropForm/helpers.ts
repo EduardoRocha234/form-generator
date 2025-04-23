@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react'
 import {BaseElementProps, DragItem, FormElement} from '../../interfaces'
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid'
 
 export const calculateDropElements = (
 	item: DragItem,
@@ -93,15 +93,6 @@ export const calculateResizeElements = (
 			}
 		}
 	})
-}
-
-export const componentMap: Record<
-	string,
-	React.LazyExoticComponent<React.ComponentType<BaseElementProps>>
-> = {
-	singleLine: React.lazy(() => import('./FormElements/SigleLineElement')),
-	number: React.lazy(() => import('./FormElements/NumberElement')),
-	multiline: React.lazy(() => import('./FormElements/MultiLineElement')),
 }
 
 export function useUndoRedo<T>(initialState: T) {

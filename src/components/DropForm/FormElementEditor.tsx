@@ -1,9 +1,21 @@
 import React, {useRef, useState} from 'react'
-import clsx from 'clsx'
 import {useDrag} from 'react-dnd'
 import {Icon} from '@iconify/react/dist/iconify.js'
-import type {FormElement, FormElementProperties} from '../../interfaces'
-import {componentMap} from './helpers'
+import type {
+	BaseElementProps,
+	FormElement,
+	FormElementProperties,
+} from '../../interfaces'
+import classNames from 'classnames'
+
+const componentMap: Record<
+	string,
+	React.LazyExoticComponent<React.ComponentType<BaseElementProps>>
+> = {
+	singleLine: React.lazy(() => import('./FormElements/SigleLineElement')),
+	number: React.lazy(() => import('./FormElements/NumberElement')),
+	multiline: React.lazy(() => import('./FormElements/MultiLineElement')),
+}
 
 interface FormElementEditorProps {
 	element: FormElement
@@ -83,12 +95,13 @@ function FormElementEditor({
 	return (
 		<div
 			ref={containerRef}
-			className={clsx(
+			className={classNames(
 				'p-2 bg-white rounded mb-2 relative hover:bg-slate-100 transition-all pr-4 group',
 				{
 					'opacity-50': isDragging,
 					'!bg-slate-100': isResizing,
-					'border border-dashed border-blue-600 !bg-blue-50': id === 'preview' || isDragging
+					'border border-dashed border-blue-600 !bg-blue-50':
+						id === 'preview' || isDragging,
 				}
 			)}
 			style={{width: `${width}%`}}

@@ -2,7 +2,7 @@ import {useState, useRef, JSX, ElementType, useEffect} from 'react'
 import {useDrop} from 'react-dnd'
 import FormRow from './FormRow'
 import FormElementPreview from './FormElementPreview'
-import {
+import type {
 	DragItem,
 	FormElement,
 	FormElementProperties,
@@ -251,7 +251,7 @@ function DropForm() {
 	return (
 		<div
 			ref={combineRefs}
-			className={`h-full rounded-lg shadow-sm w-full bg-white relative ${
+			className={`min-h-full rounded-lg shadow-sm w-full bg-white relative  ${
 				isOver ? 'bg-blue-100' : ''
 			}`}
 		>
@@ -276,7 +276,7 @@ function DropForm() {
 				</div>
 			}
 			{elements.length === 0 && !isOver && (
-				<div className="h-full w-full flex flex-col -mt-20 items-center font-semibold text-lg justify-center text-slate-400">
+				<div className="h-full w-full flex flex-col mt-10 items-center font-semibold text-lg justify-center text-slate-400">
 					<Icon
 						icon={'ri:drag-drop-line'}
 						className="size-20 "
