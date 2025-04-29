@@ -19,6 +19,13 @@ export interface FormElement {
 	properties?: FormElementProperties
 }
 
+export interface DynamicForm {
+	id: string
+	title: string
+	description: string
+	elements: FormElement[]
+}
+
 export interface DragItem {
 	type: ElementType
 	id?: string

@@ -1,5 +1,5 @@
-import React, {useCallback, useState} from 'react'
-import {BaseElementProps, DragItem, FormElement} from '../../interfaces'
+import {useCallback, useState} from 'react'
+import {DragItem, FormElement} from '../../interfaces'
 import {v4 as uuidv4} from 'uuid'
 
 export const calculateDropElements = (
@@ -93,44 +93,4 @@ export const calculateResizeElements = (
 			}
 		}
 	})
-}
-
-export function useUndoRedo<T>(initialState: T) {
-	const [state, setState] = useState<T>(initialState)
-	const [history, setHistory] = useState<T[]>([])
-	const [future, setFuture] = useState<T[]>([])
-
-	const update = useCallback(
-		(newState: T) => {
-			setHistory((prev) => [...prev, state])
-			setState(newState)
-			setFuture([])
-		},
-		[state]
-	)
-
-	const undo = useCallback(() => {
-		if (history.length === 0) return
-		const previous = history[history.length - 1]
-		setFuture((prev) => [state, ...prev])
-		setHistory((prev) => prev.slice(0, -1))
-		setState(previous)
-	}, [history, state])
-
-	const redo = useCallback(() => {
-		if (future.length === 0) return
-		const next = future[0]
-		setHistory((prev) => [...prev, state])
-		setFuture((prev) => prev.slice(1))
-		setState(next)
-	}, [future, state])
-
-	return {
-		state,
-		update,
-		undo,
-		redo,
-		canUndo: history.length > 0,
-		canRedo: future.length > 0,
-	}
 }

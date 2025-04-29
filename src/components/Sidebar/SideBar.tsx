@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {Icon} from '@iconify/react/dist/iconify.js'
-import ElementsBar from './ElementsBar'
-import FormsBar from './FormsBar'
+import ElementsBar from './ElementsBar.tsx'
+import FormsBar from './FormsBar.tsx'
 import TemplatesBar from './TemplatesBar.tsx'
 import classNames from 'classnames'
 
@@ -33,6 +33,7 @@ function SideBar() {
 			<div className="flex flex-col h-full border-r pr-2 gap-4 border-dashed border-slate-300">
 				{options.map((option) => (
 					<button
+						key={option.value}
 						className={classNames(
 							'text-slate-600 text-xs flex flex-col items-center gap-2   p-2 rounded-xl border-slate-300 cursor-pointer hover:bg-slate-100 hover:shadow-sm transition-colors',
 							{

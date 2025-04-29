@@ -4,6 +4,7 @@ import FormRow from './FormRow'
 import FormElementPreview from './FormElementPreview'
 import type {
 	DragItem,
+	DynamicForm,
 	FormElement,
 	FormElementProperties,
 	HoverPosition,
@@ -11,12 +12,19 @@ import type {
 } from '../../interfaces'
 import {calculateDropElements, calculateResizeElements} from './helpers'
 import {Icon} from '@iconify/react/dist/iconify.js'
-import {useUndoRedoContext} from './UndoRedoContext'
+import {useUndoRedoContext} from '../../contexts/UndoRedoContext'
 
-function DropForm() {
+interface DropFormProps {
+	form?: DynamicForm
+	setForm: (form: DynamicForm) => void
+}
+
+function DropForm({form, setForm}: DropFormProps) {
 	const HOVER_DEBONCE_TIME = 150
+
 	const dropAreaRef = useRef<HTMLDivElement | null>(null)
 	const rowsRef = useRef<(HTMLDivElement | null)[]>([])
+
 	const {elements, setElements, undo, redo} = useUndoRedoContext()
 	const [previewState, setPreviewState] = useState<{
 		elements: FormElement[] | null
@@ -29,6 +37,8 @@ function DropForm() {
 	})
 	const [lastHoverPosition, setLastHoverPosition] =
 		useState<HoverPosition | null>(null)
+	const [inputDescriptionVisible, setInputDescriptionVisible] =
+		useState<boolean>(false)
 
 	const getStableTargetRow = (
 		x: number,
@@ -232,6 +242,26 @@ function DropForm() {
 		})
 	}
 
+	const onSetFormTitle = (value: string) => {
+		if (!form) return
+
+		setForm({...form, title: value})
+	}
+
+	const onSetFormDescription = (value: string) => {
+		if (!form) return
+
+		setForm({...form, description: value})
+	}
+
+	const setIntialValues = () => {
+		if (!form) return
+
+		if (form.description.length) setInputDescriptionVisible(true)
+
+		setElements(form.elements)
+	}
+
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.ctrlKey && e.key === 'z') {
@@ -248,6 +278,16 @@ function DropForm() {
 		return () => window.removeEventListener('keydown', handleKeyDown)
 	}, [undo, redo])
 
+	useEffect(() => {
+		if (!form) return
+
+		setForm({...form, elements: elements})
+	}, [elements])
+
+	useEffect(() => {
+		setIntialValues()
+	}, [form])
+
 	return (
 		<div
 			ref={combineRefs}
@@ -258,11 +298,25 @@ function DropForm() {
 			<div className="mx-6 mt-4 flex flex-col justify-start items-start gap-1 mb-2">
 				<input
 					className="focus:outline-0 text-xl font-semibold"
-					value={'My Form'}
+					value={form?.title || ''}
+					onChange={(e) => onSetFormTitle(e.target.value)}
 				/>
-				<button className="text-blue-400 cursor-pointer font-semibold">
-					Add description
-				</button>
+				{!inputDescriptionVisible && (
+					<button
+						className="text-blue-400 cursor-pointer font-semibold"
+						onClick={() => setInputDescriptionVisible(true)}
+					>
+						Add description
+					</button>
+				)}
+				{inputDescriptionVisible && (
+					<textarea
+						className="focus:outline-0  text-slate-600 w-full appearance-none resize-none"
+						placeholder="Type a description here..."
+						value={form?.description || ''}
+						onChange={(e) => onSetFormDescription(e.target.value)}
+					/>
+				)}
 			</div>
 			{
 				<div className="p-4">
