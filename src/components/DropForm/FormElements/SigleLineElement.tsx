@@ -36,9 +36,10 @@ function SingleLineElement({
 			<input
 				id={id}
 				type="text"
-				placeholder={defaultProperties.placeholder}
 				className="py-2 px-4 rounded-md border bg-slate-50 border-slate-300 w-full focus:outline-0"
+				placeholder={defaultProperties.placeholder}
 				required={defaultProperties.required}
+				defaultValue={defaultProperties.defaultValue}
 			/>
 		</div>
 	)

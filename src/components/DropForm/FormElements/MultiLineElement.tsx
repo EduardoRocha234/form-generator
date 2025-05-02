@@ -35,9 +35,10 @@ function MultilineElement({
 			</label>
 			<textarea
 				id={id}
-				placeholder={defaultProperties?.placeholder}
 				className="py-2 px-4 rounded-md border bg-slate-50 border-slate-300 w-full focus:outline-0"
 				required={defaultProperties.required}
+				placeholder={defaultProperties?.placeholder}
+				defaultValue={defaultProperties.defaultValue}
 			/>
 		</div>
 	)

@@ -41,7 +41,7 @@ function PopoverElementContent({
 	// }
 
 	return (
-		<ul className="">
+		<ul>
 			<li className="hover:bg-slate-100 p-2 rounded-md text-sm font-medium leading-none text-slate-600">
 				{!propertiesBool.setPlaceholder && (
 					<button
@@ -81,9 +81,45 @@ function PopoverElementContent({
 					</div>
 				)}
 			</li>
-
 			<li className="hover:bg-slate-100 p-2 rounded-md text-sm font-medium leading-none text-slate-600">
-				Set default value
+				{!propertiesBool.setDefaultValue && (
+					<button
+						className="w-full h-full cursor-pointer text-start py-1"
+						onClick={() => handleSetPropertiesBool('setDefaultValue', true)}
+					>
+						{!element.properties?.defaultValue
+							? 'Set default value'
+							: 'Edit default value'}
+					</button>
+				)}
+				{propertiesBool.setDefaultValue && (
+					<div className="flex">
+						<input
+							placeholder="Type a default value here"
+							className="outline-0 w-full"
+                            type={element.type === 'number' ? 'number' : 'text'}
+							value={element.properties?.defaultValue}
+							onChange={(e) =>
+								handlePropertiesChange(id, {
+									...element.properties,
+									defaultValue: e.target.value,
+								})
+							}
+						/>
+						<button
+							className="p-1 rounded-md hover:bg-slate-200 transition-colors cursor-pointer"
+							title="Remove placeholder"
+							onClick={() => {
+								handleSetPropertiesBool('setDefaultValue', false)
+							}}
+						>
+							<Icon
+								icon={'mdi:close'}
+								className="size-4"
+							/>
+						</button>
+					</div>
+				)}
 			</li>
 
 			<li className="hover:bg-slate-100 p-2 rounded-md text-sm font-medium leading-none text-slate-600">

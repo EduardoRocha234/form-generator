@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { elementsList } from './helpers'
+import {useEffect, useState} from 'react'
+import {elementsList} from './helpers'
 import InputSearch from '../InputSearch'
 import DraggableItem from '../DraggableItem'
 
@@ -9,25 +9,26 @@ function ElementsBar() {
 
 	useEffect(() => {
 		const serializedSearch = search.toLowerCase().trim()
-		const filteredElements = elementsList.map(item => {
-			const filterEl = item.elements.filter(el => {
-				const serializeLabel = el.label.toLowerCase().trim()
-				const serializeSectionLabel = item.sectionName.toLowerCase().trim()
+		const filteredElements = elementsList
+			.map((item) => {
+				const filterEl = item.elements.filter((el) => {
+					const serializeLabel = el.label.toLowerCase().trim()
+					const serializeSectionLabel = item.sectionName.toLowerCase().trim()
 
-				const matchLabel = serializeLabel.includes(serializedSearch)
-				const  matchSection = serializeSectionLabel.includes(serializedSearch)
+					const matchLabel = serializeLabel.includes(serializedSearch)
+					const matchSection = serializeSectionLabel.includes(serializedSearch)
 
-				return matchLabel || matchSection 
+					return matchLabel || matchSection
+				})
+
+				return {
+					...item,
+					elements: filterEl,
+				}
 			})
-
-			return {
-				...item,
-				elements: filterEl
-			}
-		}).filter(el => el.elements.length > 0)
+			.filter((el) => el.elements.length > 0)
 
 		setMenuElements(filteredElements)
-
 	}, [search])
 
 	return (
@@ -40,24 +41,21 @@ function ElementsBar() {
 				/>
 			</div>
 			<div className="flex flex-col gap-2">
-			{
-				menuElements.map(({elements, sectionName}) => (
-					<>
-						<span className="text-slate-500 font-semibold">{sectionName}</span>
+				{menuElements.map(({elements, sectionName}) => (
+					<div key={sectionName}>
+						<div className="text-slate-500 font-semibold mb-2">{sectionName}</div>
 						<div className="flex flex-wrap gap-4">
-							{
-								elements.map(({icon, label, type}) => (
-									<DraggableItem
-										icon={icon}
-										label={label}
-										type={type}
-									/>
-								))
-							}
+							{elements.map(({icon, label, type}) => (
+								<DraggableItem
+									key={type}
+									icon={icon}
+									label={label}
+									type={type}
+								/>
+							))}
 						</div>
-					</>
-				))
-			}
+					</div>
+				))}
 			</div>
 		</div>
 	)
