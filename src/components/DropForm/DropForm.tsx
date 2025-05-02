@@ -1,7 +1,6 @@
 import {useState, useRef, JSX, ElementType, useEffect} from 'react'
 import {useDrop} from 'react-dnd'
-import FormRow from './FormRow'
-import FormElementPreview from './FormElementPreview'
+import {Icon} from '@iconify/react/dist/iconify.js'
 import type {
 	DragItem,
 	DynamicForm,
@@ -9,10 +8,11 @@ import type {
 	FormElementProperties,
 	HoverPosition,
 	Position,
-} from '../../interfaces'
+} from '@/interfaces'
 import {calculateDropElements, calculateResizeElements} from './helpers'
-import {Icon} from '@iconify/react/dist/iconify.js'
-import {useUndoRedoContext} from '../../contexts/UndoRedoContext'
+import {useUndoRedoContext} from '@/contexts/UndoRedoContext'
+import FormRow from './FormRow'
+import FormElementPreview from './FormElementPreview'
 
 interface DropFormProps {
 	form?: DynamicForm

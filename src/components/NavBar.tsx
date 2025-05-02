@@ -1,6 +1,6 @@
 import {Icon} from '@iconify/react'
 import {useUndoRedoContext} from '../contexts/UndoRedoContext'
-import {DynamicForm} from '../interfaces'
+import {DynamicForm} from '@/interfaces'
 
 interface NavBarProps {
 	form?: DynamicForm

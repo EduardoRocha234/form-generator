@@ -1,9 +1,34 @@
-import {useState} from 'react'
+import { useEffect, useState } from 'react'
+import { elementsList } from './helpers'
 import InputSearch from '../InputSearch'
 import DraggableItem from '../DraggableItem'
 
 function ElementsBar() {
 	const [search, setSearch] = useState('')
+	const [menuElements, setMenuElements] = useState(elementsList)
+
+	useEffect(() => {
+		const serializedSearch = search.toLowerCase().trim()
+		const filteredElements = elementsList.map(item => {
+			const filterEl = item.elements.filter(el => {
+				const serializeLabel = el.label.toLowerCase().trim()
+				const serializeSectionLabel = item.sectionName.toLowerCase().trim()
+
+				const matchLabel = serializeLabel.includes(serializedSearch)
+				const  matchSection = serializeSectionLabel.includes(serializedSearch)
+
+				return matchLabel || matchSection 
+			})
+
+			return {
+				...item,
+				elements: filterEl
+			}
+		}).filter(el => el.elements.length > 0)
+
+		setMenuElements(filteredElements)
+
+	}, [search])
 
 	return (
 		<div className="h-full w-full flex flex-col px-4">
@@ -15,24 +40,24 @@ function ElementsBar() {
 				/>
 			</div>
 			<div className="flex flex-col gap-2">
-				<span className="text-slate-500 font-semibold">Text elements</span>
-				<div className="flex flex-wrap gap-4">
-					<DraggableItem
-						type="singleLine"
-						label="Single line"
-						icon="ci:text"
-					/>
-					<DraggableItem
-						type="multiline"
-						label="Multiline"
-						icon="majesticons:text-line"
-					/>
-					<DraggableItem
-						type="number"
-						label="Number"
-						icon="tabler:number-123"
-					/>
-				</div>
+			{
+				menuElements.map(({elements, sectionName}) => (
+					<>
+						<span className="text-slate-500 font-semibold">{sectionName}</span>
+						<div className="flex flex-wrap gap-4">
+							{
+								elements.map(({icon, label, type}) => (
+									<DraggableItem
+										icon={icon}
+										label={label}
+										type={type}
+									/>
+								))
+							}
+						</div>
+					</>
+				))
+			}
 			</div>
 		</div>
 	)

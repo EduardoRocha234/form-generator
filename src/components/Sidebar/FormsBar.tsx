@@ -1,8 +1,9 @@
 import {useEffect, useState} from 'react'
 import {Icon} from '@iconify/react/dist/iconify.js'
-import type {DynamicForm} from '../../interfaces'
+import { DynamicForm } from '@/interfaces'
+import {NavLink} from 'react-router-dom'
 import InputSearch from '../InputSearch'
-import {formService} from '../../core'
+import { formService } from '@/core'
 
 function FormsBar() {
 	const [search, setSearch] = useState('')
@@ -28,18 +29,19 @@ function FormsBar() {
 				/>
 			</div>
 			<div className="flex flex-wrap gap-4">
-				{forms.map((form) => (
-					<div
-						key={form.id}
-						className="text-sm flex flex-col justify-center hover:bg-slate-100 transition-all items-center gap-2 max-w-[6rem] border rounded-md px-2 py-4 border-slate-300 text-slate-600 bg-slate-50 cursor-pointer"
-						title={form.title}
+				{forms.map(({id, title}) => (
+					<NavLink
+						to={`/form/${id}`}
+						key={id}
+						className="text-sm flex flex-col justify-center hover:bg-slate-100 transition-all items-center gap-2 w-[6rem] border rounded-md px-2 py-4 border-slate-300 text-slate-600 bg-slate-50 cursor-pointer"
+						title={title}
 					>
 						<Icon
 							icon={'mdi:form-outline'}
 							className="size-8 text-slate-500"
 						/>
-						<span className="truncate w-full">{form.title}</span>
-					</div>
+						<span className="truncate w-full text-center">{title}</span>
+					</NavLink>
 				))}
 			</div>
 		</div>

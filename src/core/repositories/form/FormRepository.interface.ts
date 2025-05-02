@@ -1,4 +1,4 @@
-import {DynamicForm} from '../../../interfaces'
+import {DynamicForm} from '@/interfaces'
 
 export interface FormRepository {
 	getAllForms(): Promise<DynamicForm[]>

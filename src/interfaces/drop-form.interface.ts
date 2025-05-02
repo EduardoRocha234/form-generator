@@ -1,4 +1,5 @@
-// Definição dos tipos
+import React from "react"
+
 export type ElementType = 'singleLine' | 'multiline' | 'number'
 
 export interface FormElementProperties {
@@ -6,8 +7,9 @@ export interface FormElementProperties {
 	placeholder?: string
 	required?: boolean
 	description?: string
-	options?: string[] // For select, radio, checkbox groups
+	options?: string[]
 	defaultValue?: string
+	validationMessage?: string
 }
 
 export interface FormElement {
@@ -23,6 +25,7 @@ export interface DynamicForm {
 	id: string
 	title: string
 	description: string
+	createdAt: Date
 	elements: FormElement[]
 }
 

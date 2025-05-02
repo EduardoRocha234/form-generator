@@ -1,4 +1,4 @@
-import {DynamicForm} from '../../../interfaces'
+import {DynamicForm} from '@/interfaces'
 import {LocalFormRepository} from '../../repositories/form/FormRepository.repository'
 
 const repo = new LocalFormRepository()

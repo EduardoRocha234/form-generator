@@ -1,4 +1,4 @@
-import type {ElementType, Position} from '../../interfaces/drop-form.interface'
+import type {ElementType, Position} from '@/interfaces/drop-form.interface'
 
 interface FormElementPreviewProps {
 	type: ElementType

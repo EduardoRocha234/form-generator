@@ -1,4 +1,4 @@
-import {DynamicForm} from '../../../interfaces'
+import {DynamicForm} from '@/interfaces'
 import {FormRepository} from './FormRepository.interface'
 
 const STORAGE_KEY = 'user-forms'

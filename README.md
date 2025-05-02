@@ -1,9 +1,9 @@
 TODO
 
-routing
+resize form
+create more components
+
 
 generate codes
-create more components
 preview
 share by link or dowload file
-My Forms page

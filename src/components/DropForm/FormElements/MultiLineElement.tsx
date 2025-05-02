@@ -1,4 +1,5 @@
-import {BaseElementProps} from '../../../interfaces'
+import {BaseElementProps} from '@/interfaces'
+import classNames from 'classnames'
 
 interface MultilineElementProps extends BaseElementProps {}
 
@@ -19,7 +20,10 @@ function MultilineElement({
 		<div>
 			<label
 				htmlFor={id}
-				className="block text-md mb-2 font-semibold text-slate-600"
+				className={classNames(
+					'block text-md mb-2 font-semibold text-slate-600',
+					{required: defaultProperties.required}
+				)}
 			>
 				<input
 					value={defaultProperties.label}
@@ -33,6 +37,7 @@ function MultilineElement({
 				id={id}
 				placeholder={defaultProperties?.placeholder}
 				className="py-2 px-4 rounded-md border bg-slate-50 border-slate-300 w-full focus:outline-0"
+				required={defaultProperties.required}
 			/>
 		</div>
 	)

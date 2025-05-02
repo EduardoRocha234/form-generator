@@ -1,7 +1,7 @@
 import type {
 	FormElement,
 	FormElementProperties,
-} from '../../interfaces/drop-form.interface'
+} from '@/interfaces/drop-form.interface'
 import FormElementEditor from './FormElementEditor'
 
 interface FormRowProps {

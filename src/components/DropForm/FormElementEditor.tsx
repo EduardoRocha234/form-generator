@@ -1,12 +1,14 @@
 import React, {useRef, useState} from 'react'
+import classNames from 'classnames'
 import {useDrag} from 'react-dnd'
 import {Icon} from '@iconify/react/dist/iconify.js'
 import type {
 	BaseElementProps,
 	FormElement,
 	FormElementProperties,
-} from '../../interfaces'
-import classNames from 'classnames'
+} from '@/interfaces'
+import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover'
+import PopoverElementContent from './FormElementEditorPopoverContent'
 
 const componentMap: Record<
 	string,
@@ -38,9 +40,8 @@ function FormElementEditor({
 	const {id, type, width} = element
 	const containerRef = useRef<HTMLDivElement>(null)
 	const [isResizing, setIsResing] = useState<boolean>(false)
-	const [dropdownVisible, setDropdownVisible] = useState<boolean>(false)
 
-	const toggleDropdownVisible = () => setDropdownVisible(!dropdownVisible)
+	// const toggleDropdownVisible = () => setDropdownVisible(!dropdownVisible)
 
 	const lastElementoOfRow = elements[elements.length - 1]
 	const isLastElementOfRow = lastElementoOfRow
@@ -129,35 +130,21 @@ function FormElementEditor({
 						/>
 					</span>
 				)}
-				<span
-					className="size-5 text-slate-500 hover:text-slate-600 cursor-pointer transition-all relative"
-					onClick={() => toggleDropdownVisible()}
-				>
-					<Icon
-						icon={'mdi:dots-vertical'}
-						className="h-full w-full"
-					/>
-					{dropdownVisible && (
-						<div className="absolute bg-white min-w-[10rem] z-30 shadow-md border border-slate-200 rounded-md ">
-							<ul className="py-2 px-2">
-								<li className="hover:bg-slate-100 p-2 rounded-md text-sm">
-									Set placeholder
-								</li>
-								<li className="hover:bg-slate-100 p-2 rounded-md text-sm">
-									Set default value
-								</li>
-								{width < 25 && (
-									<li
-										className="hover:bg-slate-100 p-2 rounded-md text-sm"
-										onClick={() => handleRemoveComponent(id)}
-									>
-										Remove component
-									</li>
-								)}
-							</ul>
-						</div>
-					)}
-				</span>
+				<Popover>
+					<PopoverTrigger>
+						<Icon
+							icon={'mdi:dots-vertical'}
+							className="size-5 h-full w-full text-slate-500 hover:text-slate-600 cursor-pointer"
+						/>
+					</PopoverTrigger>
+					<PopoverContent>
+						<PopoverElementContent
+							element={element}
+							handlePropertiesChange={handlePropertiesChange}
+							handleRemoveComponent={handleRemoveComponent}
+						/>
+					</PopoverContent>
+				</Popover>
 			</div>
 
 			{!isLastElementOfRow && (

@@ -7,14 +7,14 @@ import classNames from 'classnames'
 
 type Toolbar = 'elements' | 'forms' | 'templates'
 
+const componentMap: Record<Toolbar, React.ElementType> = {
+	elements: ElementsBar,
+	forms: FormsBar,
+	templates: TemplatesBar,
+}
+
 function SideBar() {
 	const [toolbar, setToolbar] = useState<Toolbar>('elements')
-
-	const componentMap: Record<Toolbar, React.ElementType> = {
-		elements: ElementsBar,
-		forms: FormsBar,
-		templates: TemplatesBar,
-	}
 
 	const options: Array<{label: string; icon: string; value: Toolbar}> = [
 		{label: 'Elements', icon: 'heroicons-outline:view-grid', value: 'elements'},
