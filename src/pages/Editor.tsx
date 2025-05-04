@@ -23,12 +23,16 @@ function App() {
 		if (existingForm) {
 			setForm(existingForm)
 		} else {
-			const newForm = {
+			const newForm: DynamicForm = {
 				id,
 				title: 'My Form',
 				description: '',
 				elements: [],
-				createdAt: new Date()
+				createdAt: new Date(),
+				scale: {
+					height: 600,
+					width: 400,
+				},
 			}
 
 			await formService.saveForm(newForm)

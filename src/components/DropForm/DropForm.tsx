@@ -4,6 +4,7 @@ import {Icon} from '@iconify/react/dist/iconify.js'
 import type {
 	DragItem,
 	DynamicForm,
+	DynamicFormScale,
 	FormElement,
 	FormElementProperties,
 	HoverPosition,
@@ -13,6 +14,8 @@ import {calculateDropElements, calculateResizeElements} from './helpers'
 import {useUndoRedoContext} from '@/contexts/UndoRedoContext'
 import FormRow from './FormRow'
 import FormElementPreview from './FormElementPreview'
+import classNames from 'classnames'
+import ResizableComponent from '../ResizableArea'
 
 interface DropFormProps {
 	form?: DynamicForm
@@ -20,6 +23,10 @@ interface DropFormProps {
 }
 
 function DropForm({form, setForm}: DropFormProps) {
+	// if (!form) return null
+
+	console.log(form?.scale)
+
 	const HOVER_DEBONCE_TIME = 150
 
 	const dropAreaRef = useRef<HTMLDivElement | null>(null)
@@ -34,6 +41,10 @@ function DropForm({form, setForm}: DropFormProps) {
 		elements: null,
 		position: {x: 0, y: 0},
 		type: null,
+	})
+	const [scale, setScale] = useState<DynamicFormScale>({
+		width: 600,
+		height: 400,
 	})
 	const [lastHoverPosition, setLastHoverPosition] =
 		useState<HoverPosition | null>(null)
@@ -288,57 +299,93 @@ function DropForm({form, setForm}: DropFormProps) {
 		setIntialValues()
 	}, [form])
 
+	const onResize = ({height, width}: DynamicFormScale) => {
+		if (!form) return
+		console.log('aqui', {height, width})
+
+		const {height: formHeight, width: formWidth} = form.scale
+
+		// if (formHeight === height && formWidth === formWidth) return
+		console.log('aq', {formHeight, formWidth})
+
+		setForm({
+			...form,
+			scale: {
+				width,
+				height,
+			},
+		})
+	}
+
 	return (
-		<div
-			ref={combineRefs}
-			className={`min-h-full rounded-lg shadow-sm w-full bg-white relative  ${
-				isOver ? 'bg-blue-100' : ''
-			}`}
-		>
-			<div className="mx-6 mt-4 flex flex-col justify-start items-start gap-1 mb-2">
-				<input
-					className="focus:outline-0 text-xl font-semibold"
-					value={form?.title || ''}
-					onChange={(e) => onSetFormTitle(e.target.value)}
-				/>
-				{!inputDescriptionVisible && (
-					<button
-						className="text-blue-400 cursor-pointer font-semibold"
-						onClick={() => setInputDescriptionVisible(true)}
+		<>
+			{form && (
+				<div>
+					<span className='text-slate-600 text-xs'>
+						{form.scale.height}px x {form.scale.width}px
+					</span>
+					<ResizableComponent
+						width={form.scale.width}
+						height={form.scale.height}
+						onResize={onResize}
 					>
-						Add description
-					</button>
-				)}
-				{inputDescriptionVisible && (
-					<textarea
-						className="focus:outline-0  text-slate-600 w-full appearance-none resize-none"
-						placeholder="Type a description here..."
-						value={form?.description || ''}
-						onChange={(e) => onSetFormDescription(e.target.value)}
-					/>
-				)}
-			</div>
-			{
-				<div className="p-4">
-					{renderRows()}
-					{previewState.type && isOver && (
-						<FormElementPreview
-							type={previewState.type}
-							position={previewState.position}
-						/>
-					)}
-				</div>
-			}
-			{elements.length === 0 && !isOver && (
-				<div className="h-full w-full flex flex-col mt-10 items-center font-semibold text-lg justify-center text-slate-400">
-					<Icon
-						icon={'ri:drag-drop-line'}
-						className="size-20 "
-					/>
-					Drag an Drop components here
+						<div
+							ref={combineRefs}
+							className={classNames(
+								' bg-white  absolute top-0 left-0 right-0 bottom-0 h-full w-full rounded-md',
+								{
+									'bg-blue-100': isOver,
+								}
+							)}
+						>
+							<div className="mx-6 mt-4 flex flex-col justify-start items-start gap-1 mb-2">
+								<input
+									className="focus:outline-0 text-xl font-semibold"
+									value={form?.title || ''}
+									onChange={(e) => onSetFormTitle(e.target.value)}
+								/>
+								{!inputDescriptionVisible && (
+									<button
+										className="text-blue-400 cursor-pointer font-semibold"
+										onClick={() => setInputDescriptionVisible(true)}
+									>
+										Add description
+									</button>
+								)}
+								{inputDescriptionVisible && (
+									<textarea
+										className="focus:outline-0  text-slate-600 w-full appearance-none resize-none"
+										placeholder="Type a description here..."
+										value={form?.description || ''}
+										onChange={(e) => onSetFormDescription(e.target.value)}
+									/>
+								)}
+							</div>
+							{
+								<div className="p-4">
+									{renderRows()}
+									{previewState.type && isOver && (
+										<FormElementPreview
+											type={previewState.type}
+											position={previewState.position}
+										/>
+									)}
+								</div>
+							}
+							{elements.length === 0 && !isOver && (
+								<div className="h-full w-full flex flex-col mt-10 items-center font-semibold text-lg justify-center text-slate-400">
+									<Icon
+										icon={'ri:drag-drop-line'}
+										className="size-20 "
+									/>
+									Drag an Drop components here
+								</div>
+							)}
+						</div>
+					</ResizableComponent>
 				</div>
 			)}
-		</div>
+		</>
 	)
 }
 

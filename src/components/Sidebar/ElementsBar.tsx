@@ -43,7 +43,9 @@ function ElementsBar() {
 			<div className="flex flex-col gap-2">
 				{menuElements.map(({elements, sectionName}) => (
 					<div key={sectionName}>
-						<div className="text-slate-500 font-semibold mb-2">{sectionName}</div>
+						<div className="text-slate-500 font-semibold mb-2">
+							{sectionName}
+						</div>
 						<div className="flex flex-wrap gap-4">
 							{elements.map(({icon, label, type}) => (
 								<DraggableItem

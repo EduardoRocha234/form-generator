@@ -1,5 +1,3 @@
-import React from "react"
-
 export type ElementType = 'singleLine' | 'multiline' | 'number'
 
 export interface FormElementProperties {
@@ -21,12 +19,18 @@ export interface FormElement {
 	properties?: FormElementProperties
 }
 
+export interface DynamicFormScale {
+	width: number
+	height: number
+}
+
 export interface DynamicForm {
 	id: string
 	title: string
 	description: string
 	createdAt: Date
 	elements: FormElement[]
+	scale: DynamicFormScale
 }
 
 export interface DragItem {
