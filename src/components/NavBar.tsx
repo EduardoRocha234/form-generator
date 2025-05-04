@@ -17,7 +17,7 @@ function NavBar({form, setForm}: NavBarProps) {
 	}
 
 	return (
-		<div className="bg-white fixed top-0 flex items-center justify-between py-4 px-6 shadow-sm w-full z-50">
+		<div className="bg-white fixed top-0 flex items-center justify-between py-4 px-6 shadow-sm w-full z-[200]">
 			<div className="flex gap-6">
 				<div>
 					<h1 className="text-lg font-bold">FormDrop | Form Builder</h1>

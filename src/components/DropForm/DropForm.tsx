@@ -18,14 +18,13 @@ import classNames from 'classnames'
 import ResizableComponent from '../ResizableArea'
 
 interface DropFormProps {
+	containerRef: React.RefObject<HTMLDivElement | null>
 	form?: DynamicForm
 	setForm: (form: DynamicForm) => void
 }
 
-function DropForm({form, setForm}: DropFormProps) {
+function DropForm({form, setForm, containerRef}: DropFormProps) {
 	// if (!form) return null
-
-	console.log(form?.scale)
 
 	const HOVER_DEBONCE_TIME = 150
 
@@ -301,18 +300,23 @@ function DropForm({form, setForm}: DropFormProps) {
 
 	const onResize = ({height, width}: DynamicFormScale) => {
 		if (!form) return
-		console.log('aqui', {height, width})
 
-		const {height: formHeight, width: formWidth} = form.scale
+		if (!containerRef?.current) return
 
-		// if (formHeight === height && formWidth === formWidth) return
-		console.log('aq', {formHeight, formWidth})
+		const rect = containerRef.current.getBoundingClientRect()
+
+		const maxWidth = rect.width - 30
+		const maxHeight = rect.height - 30
+
+
+		const newWidth = Math.min(width, maxWidth)
+		const newHeight = Math.min(height, maxHeight)
 
 		setForm({
 			...form,
 			scale: {
-				width,
-				height,
+				width: Math.round(newWidth),
+				height: Math.round(newHeight),
 			},
 		})
 	}
@@ -321,7 +325,7 @@ function DropForm({form, setForm}: DropFormProps) {
 		<>
 			{form && (
 				<div>
-					<span className='text-slate-600 text-xs'>
+					<span className="text-slate-600 text-xs">
 						{form.scale.height}px x {form.scale.width}px
 					</span>
 					<ResizableComponent

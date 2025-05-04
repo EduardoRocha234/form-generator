@@ -29,7 +29,7 @@ function SideBar() {
 	const Component = componentMap[toolbar]
 
 	return (
-		<div className="flex gap-2 pt-[6rem] h-full w-full bg-white px-2">
+		<div className="flex gap-2 pt-[2rem] h-full w-full bg-white px-2 z-[150]">
 			<div className="flex flex-col h-full border-r pr-2 gap-4 border-dashed border-slate-300">
 				{options.map((option) => (
 					<button

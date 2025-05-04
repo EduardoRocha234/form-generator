@@ -134,8 +134,8 @@ function ResizableComponent({height, width, onResize, children}: Props) {
 			ref={dropAreaRef}
 			className="relative group/resize select-none rounded-md"
 			style={{
-				width: `${scale.width}px`,
-				height: `${scale.height}px`,
+				width: `${width}px`,
+				height: `${height}px`,
 			}}
 		>
 			<div
