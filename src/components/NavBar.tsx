@@ -1,19 +1,15 @@
 import {Icon} from '@iconify/react'
 import {useUndoRedoContext} from '../contexts/UndoRedoContext'
-import {DynamicForm} from '@/interfaces'
+import {useFormContext} from '@/contexts/FormContext'
 
-interface NavBarProps {
-	form?: DynamicForm
-	setForm: (form: DynamicForm) => void
-}
-
-function NavBar({form, setForm}: NavBarProps) {
+function NavBar() {
 	const {undo, redo, canUndo, canRedo} = useUndoRedoContext()
+	const {currentForm, setForm} = useFormContext()
 
 	const onSetFormTitle = (value: string) => {
-		if (!form) return
+		if (!currentForm) return
 
-		setForm({...form, title: value})
+		setForm({...currentForm, title: value})
 	}
 
 	return (
@@ -29,7 +25,7 @@ function NavBar({form, setForm}: NavBarProps) {
 					<div className="text-slate-600 text-sm flex items-center gap-2 border px-4 py-2 rounded-xl border-slate-300  hover:bg-slate-50 transition-colors">
 						<input
 							className="focus:outline-0"
-							value={form?.title || ''}
+							value={currentForm?.title || ''}
 							onChange={(e) => onSetFormTitle(e.target.value)}
 						/>
 					</div>
