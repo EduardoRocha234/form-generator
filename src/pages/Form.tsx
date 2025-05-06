@@ -19,17 +19,6 @@ function Editor() {
 
 		if (existingForm) {
 			setForm(existingForm)
-		} else {
-			const newForm = {
-				id,
-				title: 'My Form',
-				description: '',
-				elements: [],
-				createdAt: new Date(),
-			}
-
-			await formService.saveForm(newForm)
-			setForm(newForm as DynamicForm)
 		}
 	}
 

@@ -39,6 +39,7 @@ function FormsBar() {
 		const userForms = await formService.getAllForms()
 
 		setForms(userForms)
+		return userForms
 	}
 
 	const createNewFom = async () => {
@@ -54,8 +55,7 @@ function FormsBar() {
 
 		await navigate(`/form/${newForm.id}`)
 		await getForms()
-		
-		
+
 		toast.success('New Form created with success')
 		setDialogNewFormVisible(false)
 	}
@@ -78,16 +78,18 @@ function FormsBar() {
 		if (!idFormToDelete) return
 
 		await formService.deleteForm(idFormToDelete)
-		await getForms()
+		const forms = await getForms()
 
-		if (currentFormId === idFormToDelete) {
+		if (forms.length === 0) {
+			await navigate(`/form`)
+		} else if (currentFormId === idFormToDelete) {
 			await navigate(`/form/${forms[0].id}`)
 		}
 
 		toast.success('Form deleted with success')
 		closeDeleteDialog()
 	}
-	
+
 	useEffect(() => {
 		getForms()
 	}, [])
