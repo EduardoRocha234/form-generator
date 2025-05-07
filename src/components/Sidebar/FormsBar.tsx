@@ -34,11 +34,13 @@ function FormsBar() {
 	const [deteteDialogVisible, setDeteteDialogVisible] = useState<boolean>(false)
 	const [idFormToDelete, setIdFormToDelete] = useState<string | null>(null)
 	const [forms, setForms] = useState<DynamicForm[]>([])
+	const [filteredForms, setFilteredForms] = useState<DynamicForm[]>([])
 
 	const getForms = async () => {
 		const userForms = await formService.getAllForms()
 
 		setForms(userForms)
+		setFilteredForms(userForms)
 		return userForms
 	}
 
@@ -91,6 +93,17 @@ function FormsBar() {
 	}
 
 	useEffect(() => {
+		const serializedSearch = search.toLowerCase().trim()
+		const filteredElements = forms.filter((el) => {
+			if (serializedSearch.length === 0) return true
+
+			return el.title.toLowerCase().includes(serializedSearch)
+		})
+
+		setFilteredForms(filteredElements)
+	}, [search])
+
+	useEffect(() => {
 		getForms()
 	}, [])
 
@@ -118,7 +131,7 @@ function FormsBar() {
 						</span>
 					</div>
 
-					{forms.map(({id, title}) => (
+					{filteredForms.map(({id, title}) => (
 						<NavLink
 							to={`/form/${id}`}
 							key={id}
