@@ -6,6 +6,8 @@ import {FormProvider} from './contexts/FormContext'
 import {Toaster} from '@/components/ui/sonner'
 import Form from '@/pages/Form'
 import NoForm from './pages/NoForm'
+import EditorLayout from './layouts/EditorLayout'
+import Home from './pages/Home'
 
 function App() {
 	return (
@@ -15,13 +17,19 @@ function App() {
 				<UndoRedoProvider>
 					<DndProvider backend={HTML5Backend}>
 						<Routes>
+							<Route element={<EditorLayout />}>
+								<Route
+									path="/form/:id"
+									element={<Form />}
+								/>
+								<Route
+									path="/form"
+									element={<NoForm />}
+								/>
+							</Route>
 							<Route
-								path="/form/:id"
-								element={<Form />}
-							/>
-							<Route
-								path="/form"
-								element={<NoForm />}
+								path="/"
+								element={<Home />}
 							/>
 						</Routes>
 					</DndProvider>

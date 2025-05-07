@@ -38,12 +38,10 @@ function Editor() {
 	}, [id])
 
 	return (
-		<EditorLayout>
-			<DropForm
-				form={currentForm}
-				setForm={handleSetForm}
-			/>
-		</EditorLayout>
+		<DropForm
+			form={currentForm}
+			setForm={handleSetForm}
+		/>
 	)
 }
 
