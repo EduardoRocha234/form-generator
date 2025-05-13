@@ -41,8 +41,6 @@ function FormElementEditor({
 	const containerRef = useRef<HTMLDivElement>(null)
 	const [isResizing, setIsResing] = useState<boolean>(false)
 
-	// const toggleDropdownVisible = () => setDropdownVisible(!dropdownVisible)
-
 	const lastElementoOfRow = elements[elements.length - 1]
 	const isLastElementOfRow = lastElementoOfRow
 		? lastElementoOfRow.id === id

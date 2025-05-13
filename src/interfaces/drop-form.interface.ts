@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 
 export type ElementType = 'singleLine' | 'multiline' | 'number'
 
@@ -32,6 +32,7 @@ export interface DynamicForm {
 export interface DragItem {
 	type: ElementType
 	id?: string
+	properties?: FormElementProperties
 }
 
 export interface DropPosition {

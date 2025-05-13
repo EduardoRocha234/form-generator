@@ -1,5 +1,5 @@
-import { DragItem, FormElement } from '@/interfaces'
-import { v4 as uuidv4 } from 'uuid'
+import {DragItem, FormElement} from '@/interfaces'
+import {v4 as uuidv4} from 'uuid'
 
 export const calculateDropElements = (
 	item: DragItem,
@@ -10,6 +10,7 @@ export const calculateDropElements = (
 	const previewId = item.id ?? 'preview'
 
 	const newElements = elements.filter((el) => el.id !== previewId)
+	const itemData = elements.find((el) => el.id === item.id)
 
 	const rows: Record<number, FormElement[]> = {}
 	newElements.forEach((el) => {
@@ -40,11 +41,12 @@ export const calculateDropElements = (
 	})
 
 	resultElements.push({
-		id: isPreview ? 'preview' : `${item.type}-${uuidv4()}`,
+		id: isPreview ? 'preview' : item.id ?? `${item.type}-${uuidv4()}`,
 		type: item.type,
 		width,
 		row: targetRow,
 		position,
+		properties: itemData?.properties,
 	})
 
 	return resultElements.sort((a, b) => {

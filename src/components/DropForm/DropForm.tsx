@@ -63,8 +63,9 @@ function DropForm({form, setForm}: DropFormProps) {
 		let shouldCreateNewRow = false
 		if (formRows.length > 0) {
 			const lastRowRect = formRows[formRows.length - 1].getBoundingClientRect()
-			if (y > lastRowRect.bottom) {
-				calculatedRow = formRows.length
+
+			if (y > lastRowRect.bottom + 10) {
+				calculatedRow = formRows.length + 1
 				shouldCreateNewRow = true
 			}
 		}
@@ -116,8 +117,6 @@ function DropForm({form, setForm}: DropFormProps) {
 				const dropRect = dropAreaRef.current.getBoundingClientRect()
 				const relX = offset.x - dropRect.left
 				const relY = offset.y - dropRect.top
-				// const relX = offset.x
-				// const relY = offset.y
 
 				setPreviewState({
 					elements: previewElements,
@@ -138,9 +137,9 @@ function DropForm({form, setForm}: DropFormProps) {
 					Date.now()
 				)
 
-				if (!item.id) {
-					setElements(calculateDropElements(item, elements, targetRow))
-				}
+				const updatedElements = calculateDropElements(item, elements, targetRow)
+
+				setElements(updatedElements)
 
 				setPreviewState({
 					elements: null,
@@ -291,11 +290,11 @@ function DropForm({form, setForm}: DropFormProps) {
 	return (
 		<div
 			ref={combineRefs}
-			className={`min-h-full rounded-lg shadow-sm w-full bg-white relative  ${
+			className={`min-h-full rounded-lg shadow-sm w-full bg-white relative p-4 ${
 				isOver ? 'bg-blue-100' : ''
 			}`}
 		>
-			<div className="mx-6 mt-4 flex flex-col justify-start items-start gap-1 mb-2">
+			<div className="flex flex-col justify-start items-start gap-1 mb-4 ml-2">
 				<input
 					className="focus:outline-0 text-xl font-semibold"
 					value={form?.title || ''}
@@ -319,7 +318,7 @@ function DropForm({form, setForm}: DropFormProps) {
 				)}
 			</div>
 			{
-				<div className="p-4">
+				<div>
 					{renderRows()}
 					{previewState.type && isOver && (
 						<FormElementPreview
