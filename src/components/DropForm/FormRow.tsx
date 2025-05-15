@@ -25,7 +25,7 @@ function FormRow({
 }: FormRowProps) {
 	return (
 		<div
-			className="form-row w-full flex mb-2 "
+			className="form-row w-full flex mb-2"
 			ref={rowRef}
 		>
 			{elements

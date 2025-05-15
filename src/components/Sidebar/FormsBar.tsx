@@ -23,8 +23,13 @@ import {
 } from '../ui/dropdown-menu'
 import InputSearch from '../InputSearch'
 import EmptyFormPrint from '@/assets/img/empty-form-template.png'
+import {Toolbar} from './SideBar'
 
-function FormsBar() {
+interface Props {
+	setToolbarSelected: (value: Toolbar) => void
+}
+
+function FormsBar({setToolbarSelected}: Props) {
 	const {id: currentFormId} = useParams<{id: string}>()
 	const navigate = useNavigate()
 
@@ -59,6 +64,7 @@ function FormsBar() {
 		await getForms()
 
 		toast.success('New Form created with success')
+		setToolbarSelected('elements')
 		setDialogNewFormVisible(false)
 	}
 

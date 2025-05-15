@@ -6,7 +6,7 @@ import TemplatesBar from './TemplatesBar.tsx'
 import classNames from 'classnames'
 import {useLocation} from 'react-router-dom'
 
-type Toolbar = 'elements' | 'forms' | 'templates'
+export type Toolbar = 'elements' | 'forms' | 'templates'
 
 const componentMap: Record<Toolbar, React.ElementType> = {
 	elements: ElementsBar,
@@ -63,7 +63,7 @@ function SideBar() {
 				))}
 			</div>
 			<div className="h-full w-full">
-				<Component />
+				<Component setToolbarSelected={setToolbarSelected} />
 			</div>
 		</div>
 	)
