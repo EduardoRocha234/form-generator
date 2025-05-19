@@ -1,4 +1,4 @@
-import {DragItem, FormElement} from '@/interfaces'
+import {DragItem, FormElement} from '@/core/interfaces'
 import {v4 as uuidv4} from 'uuid'
 
 export const calculateDropElements = (

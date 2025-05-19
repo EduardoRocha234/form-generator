@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useState } from 'react'
-import { FormElement } from '@/interfaces'
+import { FormElement } from '@/core/interfaces'
 
 export function useUndoRedo<T>(initialState: T) {
 	const [state, setState] = useState<T>(initialState)

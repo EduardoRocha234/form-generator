@@ -1,5 +1,5 @@
-import {BaseElementProps} from '@/interfaces'
 import classNames from 'classnames'
+import { BaseElementProps } from './helpers'
 
 interface NumberElementProps extends BaseElementProps {}
 

@@ -1,4 +1,4 @@
-import {ElementType, FormElement} from '@/interfaces'
+import {ElementType, FormElement} from '@/core/interfaces'
 import EmptyFormPrint from '@/assets/img/empty-form-template.png'
 import {v4 as uuidv4} from 'uuid'
 

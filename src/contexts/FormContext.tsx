@@ -1,4 +1,4 @@
-import {DynamicForm} from '@/interfaces'
+import {DynamicForm} from '@/core/interfaces'
 import {createContext, useContext, useState} from 'react'
 
 type FormContextType = {

@@ -1,5 +1,7 @@
 TODO
 
+templates bar
+preview
 <!-- resize form -->
 create more components
 

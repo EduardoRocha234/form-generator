@@ -1,4 +1,4 @@
-import {FormElement, FormElementProperties} from '@/interfaces'
+import {FormElement, FormElementProperties} from '@/core/interfaces'
 import {Icon} from '@iconify/react/dist/iconify.js'
 import {useState} from 'react'
 import {Checkbox} from '../ui/checkbox'

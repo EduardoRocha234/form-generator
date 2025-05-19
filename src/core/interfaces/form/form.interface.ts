@@ -1,5 +1,3 @@
-import React from 'react'
-
 export type ElementType = 'singleLine' | 'multiline' | 'number'
 
 export interface FormElementProperties {
@@ -25,29 +23,6 @@ export interface DynamicForm {
 	id: string
 	title: string
 	description: string
-	createdAt: Date
+	createdAt?: Date
 	elements: FormElement[]
-}
-
-export interface DragItem {
-	type: ElementType
-	id?: string
-	properties?: FormElementProperties
-}
-
-export interface DropPosition {
-	row: number
-	position: number
-}
-
-export interface Position {
-	x: number
-	y: number
-}
-
-export interface HoverPosition {
-	x: number
-	y: number
-	row: number
-	timestamp: number
 }

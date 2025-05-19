@@ -2,13 +2,10 @@ import React, {useRef, useState} from 'react'
 import classNames from 'classnames'
 import {useDrag} from 'react-dnd'
 import {Icon} from '@iconify/react/dist/iconify.js'
-import type {
-	BaseElementProps,
-	FormElement,
-	FormElementProperties,
-} from '@/interfaces'
+import type {FormElement, FormElementProperties} from '@/core/interfaces'
 import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover'
 import PopoverElementContent from './FormElementEditorPopoverContent'
+import {BaseElementProps} from './FormElements/helpers'
 
 const componentMap: Record<
 	string,

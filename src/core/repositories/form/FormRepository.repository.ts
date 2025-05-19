@@ -1,50 +1,72 @@
-import {DynamicForm} from '@/interfaces'
+import {DynamicForm} from '@/core/interfaces'
 import {FormRepository} from './FormRepository.interface'
-
-const STORAGE_KEY = 'user-forms'
+import {db} from '@/core/infra/db'
+import {v4 as uuidv4} from 'uuid'
 
 export class LocalFormRepository implements FormRepository {
 	async getAllForms(): Promise<DynamicForm[]> {
-		const raw = localStorage.getItem(STORAGE_KEY)
-		return raw ? JSON.parse(raw) : []
+		try {
+			const forms = await db.forms.toArray()
+			return forms
+		} catch (error) {
+			throw new Error((error as Error).message)
+		}
 	}
 
 	async getFormById(id: string) {
-		const forms = await this.getAllForms()
-
-		const form = forms.find((form: DynamicForm) => form.id === id)
-		return form || null
-	}
-
-	async saveForm(form: DynamicForm) {
-		const forms = await this.getAllForms()
-		forms.push(form)
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(forms))
-	}
-
-	async updateForm(form: DynamicForm): Promise<void> {
 		try {
-			const forms = await this.getAllForms()
-			const index = forms.findIndex((f) => f.id === form.id)
+			const form = await db.forms.get(id)
+			return form
+		} catch (error) {
+			throw new Error((error as Error).message)
+		}
+	}
 
-			console.log(index)
+	async saveForm({
+		title,
+		description,
+		elements,
+	}: Omit<DynamicForm, 'id' | 'createdAt'>) {
+		try {
+			const id = await db.forms.add({
+				id: uuidv4(),
+				title,
+				elements,
+				description,
+				createdAt: new Date(),
+			})
 
-			if (index !== -1) {
-				const getForm = forms[index]
-				forms[index] = {...getForm, ...form}
-				localStorage.setItem(STORAGE_KEY, JSON.stringify(forms))
-				return
+			return id
+		} catch (error) {
+			throw new Error((error as Error).message)
+		}
+	}
+
+	async updateForm({id, ...form}: DynamicForm): Promise<void> {
+		try {
+			const findForm = await this.getFormById(id)
+
+			if (!findForm) {
+				throw new Error(`Form with id ${id} not found`)
 			}
 
-			throw new Error('Erro ao atualizar formulário')
-		} catch (e) {
-			throw new Error((e as Error).message)
+			await db.forms.update(id, {...form})
+		} catch (error) {
+			throw new Error((error as Error).message)
 		}
 	}
 
 	async deleteForm(id: string) {
-		const forms = await this.getAllForms()
-		const updated = forms.filter((f) => f.id !== id)
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
+		try {
+			const findForm = await this.getFormById(id)
+
+			if (!findForm) {
+				throw new Error(`Form with id ${id} not found`)
+			}
+
+			await db.forms.where('id').equals(id).delete()
+		} catch (error) {
+			throw new Error((error as Error).message)
+		}
 	}
 }

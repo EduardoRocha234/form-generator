@@ -1,4 +1,4 @@
-import {FormElementProperties} from './drop-form.interface'
+import {FormElementProperties} from '@/core/interfaces/form'
 
 export interface BaseElementProps {
 	id: string

@@ -1,6 +1,6 @@
 import {useParams} from 'react-router-dom'
 import {useEffect} from 'react'
-import {DynamicForm} from '@/interfaces'
+import {DynamicForm} from '@/core/interfaces'
 import {formService} from '@/core'
 import {useDebounce} from '@/hooks/useDebounce'
 import DropForm from '@/components/DropForm/Index'

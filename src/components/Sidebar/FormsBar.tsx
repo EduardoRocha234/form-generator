@@ -1,8 +1,7 @@
 import {useEffect, useState} from 'react'
 import {NavLink, useNavigate, useParams} from 'react-router-dom'
-import {DynamicForm} from '@/interfaces'
+import {DynamicForm} from '@/core/interfaces'
 import {formService} from '@/core'
-import {v4 as uuidV4} from 'uuid'
 import classNames from 'classnames'
 import {Icon} from '@iconify/react/dist/iconify.js'
 import {toast} from 'sonner'
@@ -50,17 +49,13 @@ function FormsBar({setToolbarSelected}: Props) {
 	}
 
 	const createNewFom = async () => {
-		const newForm = {
-			id: uuidV4(),
+		const id = await formService.saveForm({
 			title: 'My Form',
 			description: '',
 			elements: [],
-			createdAt: new Date(),
-		}
+		})
 
-		await formService.saveForm(newForm)
-
-		await navigate(`/form/${newForm.id}`)
+		await navigate(`/form/${id}`)
 		await getForms()
 
 		toast.success('New Form created with success')
