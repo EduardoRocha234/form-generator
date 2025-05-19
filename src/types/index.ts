@@ -1,1 +1,1 @@
-export * from './drop-form'
+export * from './drop-form.type'
