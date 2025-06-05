@@ -5,7 +5,7 @@ Um criador de formulários visual que permite montar elementos com arrastar-e-so
 ## 📸 Demonstração
 
 <!-- Substitua o link abaixo pelo seu GIF ou vídeo -->
-![Form Builder Demo](./src/assets/img/sistema.gif)
+![Form Builder Demo](./sistema.gif)
 
 ---
 
